@@ -19,36 +19,33 @@ function knightMoves (start, end) {
     }
 
     //Beginning of BFS
-    const queue = [[start], []]; //This is [[[start], []]] because start input is [x,y]
-    const visited = new Set();
-    
+    const queue = [[start, []]]; //This is [[[start], []]] because start input is [x,y]
+
     //Search for neighboring squares
     while (queue.length) {
         //Pop the first node from the graph
-        const currentPath = queue.shift(); 
-
-        //Add to visiited set of what we just dequeued
-        visited.add(currentPath.join(","));
+        const currentPath = queue.shift(); // gets [x,y] and path
+        const [currentPosition, currentPathTrail] = currentPath; //Destructuring it
 
         //Check if we've reached the target
-        if (currentPath[0] == end[0] && currentPath[1] == end[1]) {
-            return visited;
+        if (currentPosition[0] === end[0] && currentPosition[1] === end[1]) {
+            return currentPathTrail;
         };
-
         //Calculate the neighboring nodes then check if they're valid, add to the queue if they are valid
         directions.forEach(direction => {
             let [deltaX, deltaY] = direction;
 
-            neighborX = deltaX + currentPath[0];
-            neighborY = deltaY + currentPath[1];
+            let neighborX = deltaX + currentPosition[0];
+            let neighborY = deltaY + currentPosition[1];
 
+            //console.log(neighborX, neighborY);
             if (isValid(neighborX, neighborY)) {
-                const neighbor = [neighborX, neighborY];
-                queue.push(neighbor)
+                const neighbor = [neighborX, neighborY]; // Setting the neighbor squares
+                const newPath = [...currentPathTrail, neighbor]; // Adding the path to given square
+                queue.push([neighbor, newPath]); //Add the neighbor to the queue as well as the path
             }
         });
     }
-    
     return null; //No path exists
 };
 
