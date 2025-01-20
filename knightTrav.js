@@ -19,7 +19,7 @@ function knightMoves (start, end) {
     }
 
     //Beginning of BFS
-    const queue = [[start, []]]; //This is [[[start], []]] because start input is [x,y]
+    const queue = [[start, [start]]]; // [x,y] , [] (Path output) 
 
     //Search for neighboring squares
     while (queue.length) {
